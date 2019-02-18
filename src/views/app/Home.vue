@@ -111,7 +111,7 @@
         <v-card-title
           class="grey lighten-4 py-4 title"
         >
-          Create contact
+          Create event
         </v-card-title>
         <v-container grid-list-sm class="pa-4">
           <v-layout row wrap>
@@ -124,40 +124,40 @@
                   >
                 </v-avatar>
                 <v-text-field
-                  placeholder="Name"
+                  placeholder="Título"
+                  v-model="event.title"
                 ></v-text-field>
               </v-layout>
-            </v-flex>
-            <v-flex xs6>
-              <v-text-field
-                prepend-icon="business"
-                placeholder="Company"
-              ></v-text-field>
-            </v-flex>
-            <v-flex xs6>
-              <v-text-field
-                placeholder="Job title"
-              ></v-text-field>
-            </v-flex>
-            <v-flex xs12>
-              <v-text-field
-                prepend-icon="mail"
-                placeholder="Email"
-              ></v-text-field>
-            </v-flex>
-            <v-flex xs12>
-              <v-text-field
-                type="tel"
-                prepend-icon="phone"
-                placeholder="(000) 000 - 0000"
-                mask="phone"
-              ></v-text-field>
             </v-flex>
             <v-flex xs12>
               <v-text-field
                 prepend-icon="notes"
-                placeholder="Notes"
+                placeholder="Descrição"
+                v-model="event.description"
               ></v-text-field>
+            </v-flex>
+            <v-flex xs12>
+              <v-date-picker
+                v-model="event.date"
+                no-title
+                scrollable
+              >
+                <v-spacer></v-spacer>
+                <v-btn
+                  flat
+                  color="primary"
+                  @click="nowMenu = false"
+                >
+                  Cancel
+                </v-btn>
+                <v-btn
+                  flat
+                  color="primary"
+                  @click="$refs.nowMenu.save(now)"
+                >
+                  OK
+                </v-btn>
+              </v-date-picker>
             </v-flex>
           </v-layout>
         </v-container>
@@ -165,7 +165,7 @@
           <v-btn flat color="primary">More</v-btn>
           <v-spacer></v-spacer>
           <v-btn flat color="primary" @click="dialog = false">Cancel</v-btn>
-          <v-btn flat @click="dialog = false">Save</v-btn>
+          <v-btn flat @click="saveEvent">Save</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -177,6 +177,11 @@
 export default {
   name: 'App',
   data: () => ({
+    event: {
+      title: '',
+      description: '',
+      date: null
+    },
     dialog: false,
     drawer: false,
     items: [
@@ -218,6 +223,11 @@ export default {
   computed: {
     userIsAuthenticated () {
       return this.$store.getters.user !== null && this.$store.getters.user !== undefined
+    }
+  },
+  methods: {
+    saveEvent () {
+      this.$store.dispatch('createEvent', this.event)
     }
   }
 }

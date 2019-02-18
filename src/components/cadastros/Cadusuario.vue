@@ -461,7 +461,7 @@ export default {
   watch: {
     user (value) {
       if (value !== null && value !== undefined) {
-        if (this.e1 == 1) {
+        if (this.e1 === 1) {
           this.e1 = 2
         }
       }

@@ -26,5 +26,24 @@ new Vue({
       storageBucket: 'i9fila.appspot.com',
       messagingSenderId: '957753652684'      
     })
+
+    firebase.firestore().enablePersistence()
+      .then(() => {
+        var db = firebase.firestore()
+        this.$store.dispatch('setDatabase', db)
+      })
+      .catch(error => {
+        if (error.code == 'failed-precondition') {
+          // Multiple tabs open, persistence can only be enabled
+          // in one tab at a a time.
+          // ...
+          console.log('Feche uma das abas para habilitar a persistencia')
+        } else if (error.code == 'unimplemented') {
+          // The current browser does not support all of the
+          // features required to enable persistence
+          // ...
+          console.log('Este browser ainda não está habilitado a trabalhar com persistência')
+        }
+      })
   }
 }).$mount('#app')

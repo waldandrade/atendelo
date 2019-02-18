@@ -221,7 +221,7 @@ export default {
   },
   watch: {
     user (value) {
-      if (value !== null && value !== undefined) {
+      if (value !== null && value !== undefined && value.pessoa) {
         this.$router.push('/home')
       }
     }
