@@ -3,11 +3,20 @@ import Vuetify from 'vuetify/lib'
 import 'vuetify/src/stylus/app.styl'
 import pt from 'vuetify/es5/locale/pt'
 
+import {
+  VCard,
+  VStepper
+} from 'vuetify'
+
 Vue.use(Vuetify, {
+  components: {
+    VStepper,
+    VCard
+  },
   theme: {
-    primary: '#ee44aa',
-    secondary: '#424242',
-    accent: '#82B1FF',
+    primary: '#074d6e',
+    secondary: '#f6b555',
+    accent: '#fff9ac',
     error: '#FF5252',
     info: '#2196F3',
     success: '#4CAF50',
@@ -17,6 +26,6 @@ Vue.use(Vuetify, {
   iconfont: 'md',
   lang: {
     locales: { pt },
-    current: 'pt'
-  },
+    current: 'pt-br'
+  }
 })

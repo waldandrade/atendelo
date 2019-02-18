@@ -212,6 +212,7 @@
           <v-calendar
             ref="calendar"
             v-model="start"
+            :locale="locale"
             :type="type"
             :start="start"
             :end="end"
@@ -230,14 +231,57 @@
           >
             <template
               slot="day"
-              slot-scope="day"
+              slot-scope="{ date }"
             >
-              <div
-                v-if="day.day % 3 === 0"
-                class="day"
+             <template v-for="event in eventsMap[date]">
+              <v-menu
+                :key="event.title"
+                v-model="event.open"
+                full-width
+                offset-x
               >
-                day slot {{ day.date }}
-              </div>
+                <div
+                  v-if="!event.time"
+                  slot="activator"
+                  v-ripple
+                  class="my-event"
+                  v-html="event.title"
+                ></div>
+                <v-card
+                  color="grey lighten-4"
+                  min-width="350px"
+                  flat
+                >
+                  <v-toolbar
+                    color="primary"
+                    dark
+                  >
+                    <v-btn icon>
+                      <v-icon>edit</v-icon>
+                    </v-btn>
+                    <v-toolbar-title v-html="event.title"></v-toolbar-title>
+                    <v-spacer></v-spacer>
+                    <v-btn icon>
+                      <v-icon>favorite</v-icon>
+                    </v-btn>
+                    <v-btn icon>
+                      <v-icon>more_vert</v-icon>
+                    </v-btn>
+                  </v-toolbar>
+                  <v-card-title primary-title>
+                    <span v-html="event.details"></span>
+                  </v-card-title>
+                  <v-card-actions>
+                    <v-btn
+                      flat
+                      color="secondary"
+                    >
+                      Cancel
+                    </v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-menu>
+            </template>
             </template>
             <template
               slot="day-header"
@@ -269,132 +313,190 @@
 </template>
 
 <script>
-  const weekdaysDefault = [0, 1, 2, 3, 4, 5, 6]
+const weekdaysDefault = [0, 1, 2, 3, 4, 5, 6]
 
-  const intervalsDefault = {
-    first: 0,
-    minutes: 60,
-    count: 24,
-    height: 40
-  }
+const intervalsDefault = {
+  first: 0,
+  minutes: 60,
+  count: 24,
+  height: 40
+}
 
-  const stylings = {
-    default (interval) {
-      return undefined
-    },
-    workday (interval) {
-      const inactive = interval.weekday === 0 ||
-        interval.weekday === 6 ||
-        interval.hour < 9 ||
-        interval.hour >= 17
-      const startOfHour = interval.minute === 0
-      const dark = this.dark
-      const mid = dark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'
+const stylings = {
+  default (interval) {
+    return undefined
+  },
+  workday (interval) {
+    const inactive = interval.weekday === 0 ||
+      interval.weekday === 6 ||
+      interval.hour < 9 ||
+      interval.hour >= 17
+    const startOfHour = interval.minute === 0
+    const dark = this.dark
+    const mid = dark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'
 
-      return {
-        backgroundColor: inactive ? (dark ? 'rgba(0,0,0,0.4)' : 'rgba(0,0,0,0.05)') : undefined,
-        borderTop: startOfHour ? undefined : '1px dashed ' + mid
-      }
-    },
-    past (interval) {
-      return {
-        backgroundColor: interval.past ? (this.dark ? 'rgba(0,0,0,0.4)' : 'rgba(0,0,0,0.05)') : undefined
-      }
+    return {
+      backgroundColor: inactive ? (dark ? 'rgba(0,0,0,0.4)' : 'rgba(0,0,0,0.05)') : undefined,
+      borderTop: startOfHour ? undefined : '1px dashed ' + mid
+    }
+  },
+  past (interval) {
+    return {
+      backgroundColor: interval.past ? (this.dark ? 'rgba(0,0,0,0.4)' : 'rgba(0,0,0,0.05)') : undefined
     }
   }
+}
 
-  export default {
-    data: () => ({
-      dark: false,
-      startMenu: false,
-      start: '2019-01-12',
-      endMenu: false,
-      end: '2019-01-27',
-      nowMenu: false,
-      minWeeks: 1,
-      now: null,
-      type: 'month',
-      typeOptions: [
-        { text: 'Day', value: 'day' },
-        { text: '4 Day', value: '4day' },
-        { text: 'Week', value: 'week' },
-        { text: 'Month', value: 'month' },
-        { text: 'Custom Daily', value: 'custom-daily' },
-        { text: 'Custom Weekly', value: 'custom-weekly' }
-      ],
-      weekdays: weekdaysDefault,
-      weekdaysOptions: [
-        { text: 'Sunday - Saturday', value: weekdaysDefault },
-        { text: 'Mon, Wed, Fri', value: [1, 3, 5] },
-        { text: 'Mon - Fri', value: [1, 2, 3, 4, 5] },
-        { text: 'Mon - Sun', value: [1, 2, 3, 4, 5, 6, 0] }
-      ],
-      intervals: intervalsDefault,
-      intervalsOptions: [
-        { text: 'Default', value: intervalsDefault },
-        { text: 'Workday', value: { first: 16, minutes: 30, count: 20, height: 40 } }
-      ],
-      maxDays: 7,
-      maxDaysOptions: [
-        { text: '7 days', value: 7 },
-        { text: '5 days', value: 5 },
-        { text: '4 days', value: 4 },
-        { text: '3 days', value: 3 }
-      ],
-      styleInterval: 'default',
-      styleIntervalOptions: [
-        { text: 'Default', value: 'default' },
-        { text: 'Workday', value: 'workday' },
-        { text: 'Past', value: 'past' }
-      ],
-      color: 'primary',
-      colorOptions: [
-        { text: 'Primary', value: 'primary' },
-        { text: 'Secondary', value: 'secondary' },
-        { text: 'Accent', value: 'accent' },
-        { text: 'Red', value: 'red' },
-        { text: 'Pink', value: 'pink' },
-        { text: 'Purple', value: 'purple' },
-        { text: 'Deep Purple', value: 'deep-purple' },
-        { text: 'Indigo', value: 'indigo' },
-        { text: 'Blue', value: 'blue' },
-        { text: 'Light Blue', value: 'light-blue' },
-        { text: 'Cyan', value: 'cyan' },
-        { text: 'Teal', value: 'teal' },
-        { text: 'Green', value: 'green' },
-        { text: 'Light Green', value: 'light-green' },
-        { text: 'Lime', value: 'lime' },
-        { text: 'Yellow', value: 'yellow' },
-        { text: 'Amber', value: 'amber' },
-        { text: 'Orange', value: 'orange' },
-        { text: 'Deep Orange', value: 'deep-orange' },
-        { text: 'Brown', value: 'brown' },
-        { text: 'Blue Gray', value: 'blue-gray' },
-        { text: 'Gray', value: 'gray' },
-        { text: 'Black', value: 'black' }
-      ]
-    }),
-    computed: {
-      intervalStyle () {
-        return stylings[ this.styleInterval ].bind(this)
+export default {
+  data: () => ({
+    today: '2019-01-08',
+    events: [
+      {
+        title: 'Vacation',
+        details: 'Going to the beach!',
+        date: '2018-12-30',
+        open: false
       },
-      hasIntervals () {
-        return this.type in {
-          'week': 1, 'day': 1, '4day': 1, 'custom-daily': 1
-        }
+      {
+        title: 'Vacation',
+        details: 'Going to the beach!',
+        date: '2018-12-31',
+        open: false
       },
-      hasEnd () {
-        return this.type in {
-          'custom-weekly': 1, 'custom-daily': 1
-        }
+      {
+        title: 'Vacation',
+        details: 'Going to the beach!',
+        date: '2019-01-01',
+        open: false
+      },
+      {
+        title: 'Meeting',
+        details: 'Spending time on how we do not have enough time',
+        date: '2019-01-07',
+        open: false
+      },
+      {
+        title: '30th Birthday',
+        details: 'Celebrate responsibly',
+        date: '2019-01-03',
+        open: false
+      },
+      {
+        title: 'New Year',
+        details: 'Eat chocolate until you pass out',
+        date: '2019-01-01',
+        open: false
+      },
+      {
+        title: 'Conference',
+        details: 'Mute myself the whole time and wonder why I am on this call',
+        date: '2019-01-21',
+        open: false
+      },
+      {
+        title: 'Hackathon',
+        details: 'Code like there is no tommorrow',
+        date: '2019-02-01',
+        open: false
+      }
+    ],
+    locale: 'pt-br',
+    dark: false,
+    startMenu: false,
+    start: '2019-01-12',
+    endMenu: false,
+    end: '2019-01-27',
+    nowMenu: false,
+    minWeeks: 1,
+    now: null,
+    type: 'month',
+    typeOptions: [
+      { text: 'Day', value: 'day' },
+      { text: '4 Day', value: '4day' },
+      { text: 'Week', value: 'week' },
+      { text: 'Month', value: 'month' },
+      { text: 'Custom Daily', value: 'custom-daily' },
+      { text: 'Custom Weekly', value: 'custom-weekly' }
+    ],
+    weekdays: weekdaysDefault,
+    weekdaysOptions: [
+      { text: 'Sunday - Saturday', value: weekdaysDefault },
+      { text: 'Mon, Wed, Fri', value: [1, 3, 5] },
+      { text: 'Mon - Fri', value: [1, 2, 3, 4, 5] },
+      { text: 'Mon - Sun', value: [1, 2, 3, 4, 5, 6, 0] }
+    ],
+    intervals: intervalsDefault,
+    intervalsOptions: [
+      { text: 'Default', value: intervalsDefault },
+      { text: 'Workday', value: { first: 16, minutes: 30, count: 20, height: 40 } }
+    ],
+    maxDays: 7,
+    maxDaysOptions: [
+      { text: '7 days', value: 7 },
+      { text: '5 days', value: 5 },
+      { text: '4 days', value: 4 },
+      { text: '3 days', value: 3 }
+    ],
+    styleInterval: 'default',
+    styleIntervalOptions: [
+      { text: 'Default', value: 'default' },
+      { text: 'Workday', value: 'workday' },
+      { text: 'Past', value: 'past' }
+    ],
+    color: 'primary',
+    colorOptions: [
+      { text: 'Primary', value: 'primary' },
+      { text: 'Secondary', value: 'secondary' },
+      { text: 'Accent', value: 'accent' },
+      { text: 'Red', value: 'red' },
+      { text: 'Pink', value: 'pink' },
+      { text: 'Purple', value: 'purple' },
+      { text: 'Deep Purple', value: 'deep-purple' },
+      { text: 'Indigo', value: 'indigo' },
+      { text: 'Blue', value: 'blue' },
+      { text: 'Light Blue', value: 'light-blue' },
+      { text: 'Cyan', value: 'cyan' },
+      { text: 'Teal', value: 'teal' },
+      { text: 'Green', value: 'green' },
+      { text: 'Light Green', value: 'light-green' },
+      { text: 'Lime', value: 'lime' },
+      { text: 'Yellow', value: 'yellow' },
+      { text: 'Amber', value: 'amber' },
+      { text: 'Orange', value: 'orange' },
+      { text: 'Deep Orange', value: 'deep-orange' },
+      { text: 'Brown', value: 'brown' },
+      { text: 'Blue Gray', value: 'blue-gray' },
+      { text: 'Gray', value: 'gray' },
+      { text: 'Black', value: 'black' }
+    ]
+  }),
+  computed: {
+    // convert the list of events into a map of lists keyed by date
+    eventsMap () {
+      const map = {}
+      this.events.forEach(e => (map[e.date] = map[e.date] || []).push(e))
+      return map
+    },
+    intervalStyle () {
+      return stylings[ this.styleInterval ].bind(this)
+    },
+    hasIntervals () {
+      return this.type in {
+        'week': 1, 'day': 1, '4day': 1, 'custom-daily': 1
       }
     },
-    methods: {
-      showIntervalLabel (interval) {
-        return interval.minute === 0
+    hasEnd () {
+      return this.type in {
+        'custom-weekly': 1, 'custom-daily': 1
       }
     }
+  },
+  methods: {
+    showIntervalLabel (interval) {
+      return interval.minute === 0
+    }
   }
+}
 </script>
 
 <style scoped>
@@ -436,21 +538,19 @@
     overflow: hidden;
   }
 
-  .day {
-    position: relative;
-    height: 24px;
-    margin: 0px;
-    padding: 0px 6px;
+  .my-event {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    border-radius: 2px;
     background-color: #1867c0;
     color: #ffffff;
     border: 1px solid #1867c0;
-    border-radius: 2px;
-    left: 0;
-    right: 0;
-    user-select: none;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
+    width: 100%;
+    font-size: 12px;
+    padding: 3px;
+    cursor: pointer;
+    margin-bottom: 1px;
   }
 
 </style>

@@ -6,11 +6,25 @@ import store from './store'
 import './registerServiceWorker'
 import 'roboto-fontface/css/roboto/roboto-fontface.css'
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
+import firebase from 'firebase/app'
+import AlertComp from '@/components/util/Alert'
 
 Vue.config.productionTip = false
+
+Vue.component('app-alert', AlertComp)
 
 new Vue({
   router,
   store,
-  render: h => h(App)
+  render: h => h(App),
+  created () {
+    firebase.initializeApp({
+      apiKey: 'AIzaSyB2d1A6gltoLcpo20D-y4ZnhuUdMRYE4Nc',
+      authDomain: 'i9fila.firebaseapp.com',
+      databaseURL: 'https://i9fila.firebaseio.com',
+      projectId: 'i9fila',
+      storageBucket: 'i9fila.appspot.com',
+      messagingSenderId: '957753652684'      
+    })
+  }
 }).$mount('#app')

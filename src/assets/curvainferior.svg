@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   id="svg8"
+   version="1.1"
+   viewBox="0 0 62.948833 55.919987"
+   height="55.919987mm"
+   width="62.948833mm">
+  <defs
+     id="defs2">
+    <linearGradient
+       id="linearGradient1309">
+      <stop
+         id="stop1305"
+         offset="0"
+         style="stop-color:#6497f0;stop-opacity:1" />
+      <stop
+         id="stop1307"
+         offset="1"
+         style="stop-color:#e7fde9;stop-opacity:0.73333335" />
+    </linearGradient>
+    <clipPath
+       id="clipPath853"
+       clipPathUnits="userSpaceOnUse">
+      <rect
+         ry="0"
+         y="-190.58929"
+         x="-40.065475"
+         height="262.31546"
+         width="419.55359"
+         id="rect855"
+         style="fill:#f4aa73;fill-opacity:1;stroke:none;stroke-width:0.26458332;stroke-opacity:1" />
+    </clipPath>
+    <linearGradient
+       id="linearGradient4621">
+      <stop
+         style="stop-color:#ffe680;stop-opacity:1"
+         offset="0"
+         id="stop4617" />
+      <stop
+         style="stop-color:#ff6600;stop-opacity:1"
+         offset="1"
+         id="stop4619" />
+    </linearGradient>
+    <linearGradient
+       xlink:href="#linearGradient4621"
+       id="linearGradient4623"
+       x1="75.784225"
+       y1="123.13095"
+       x2="128.82947"
+       y2="111.78222"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.0549154,0,0,1.0549154,-4.542277,-4.1550173)" />
+    <linearGradient
+       gradientUnits="userSpaceOnUse"
+       y2="141.98293"
+       x2="227.93542"
+       y1="302.3454"
+       x1="180.67419"
+       id="linearGradient1311"
+       xlink:href="#linearGradient1309" />
+    <linearGradient
+       y2="147.83937"
+       x2="238.93694"
+       y1="302.3454"
+       x1="180.67419"
+       gradientUnits="userSpaceOnUse"
+       id="linearGradient1400"
+       xlink:href="#linearGradient1309" />
+    <clipPath
+       id="clipPath989"
+       clipPathUnits="userSpaceOnUse">
+      <rect
+         d="m 140.53516,86.845238 h 86.25056 V 297.97657 h -86.25056 z"
+         ry="0"
+         y="86.845238"
+         x="140.53516"
+         height="211.13133"
+         width="86.250565"
+         id="rect991"
+         style="fill:#ff00ff;fill-opacity:1;stroke:none;stroke-width:0.26458332;stroke-opacity:1" />
+    </clipPath>
+    <clipPath
+       id="clipPath2987"
+       clipPathUnits="userSpaceOnUse">
+      <rect
+         d="m 140.53516,221.65398 h 85.91592 v 76.32257 h -85.91592 z"
+         y="221.65398"
+         x="140.53516"
+         height="76.322578"
+         width="85.915924"
+         id="rect2989"
+         style="fill:#ff2a2a;fill-opacity:1;stroke:none;stroke-width:0.36111742;stroke-opacity:1" />
+    </clipPath>
+  </defs>
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     transform="translate(-43.157165,-241.6752)"
+     id="layer1">
+    <a
+       id="a2991">
+      <path
+         style="fill:#084d6e;fill-opacity:0.85490196;stroke:none;stroke-width:0.17293233px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 157.92854,291.643 c 15.33237,-4.99622 45.99692,-14.98861 60.60354,-36.69661 14.60662,-21.70799 13.15551,-55.13128 24.25017,-75.05321 11.09466,-19.92193 34.7347,-26.34244 49.21593,-36.46211 14.48124,-10.11968 19.8037,-23.93824 27.28804,-33.93248 7.48435,-9.994229 17.13026,-16.164025 22.09064,-19.24887 4.96038,-3.084844 5.23498,-3.084844 5.50978,-3.084844 0,0 91.0295,0 91.0295,0 0,0 0.58887,210.811694 0.58887,210.811694 0,0 -297.96986,0 -297.96986,0 0,0 2.06102,-1.33734 17.39339,-6.33357 z"
+         id="path21"
+         clip-path="url(#clipPath2987)"
+         transform="matrix(0.73267946,0,0,0.73267946,-59.810057,79.273885)" />
+    </a>
+    <g
+       id="layer1-2"
+       transform="matrix(0.37479774,-0.56192693,0.56192693,0.37479774,97.648271,253.11674)">
+      <g
+         style="fill:#000080;fill-opacity:0.73333333"
+         id="g4635"
+         transform="matrix(1.4321739,0,0,1.4321739,-25.557329,-58.765184)" />
+    </g>
+  </g>
+</svg>
